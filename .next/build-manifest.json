@@ -27,6 +27,11 @@
       "static/chunks/main.js",
       "static/chunks/pages/questionnaire.js"
     ],
+    "/recommended-measures": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/recommended-measures.js"
+    ],
     "/results": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",

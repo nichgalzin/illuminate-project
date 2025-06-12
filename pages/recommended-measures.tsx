@@ -51,12 +51,15 @@ export default function RecommendedMeasures() {
         {/* Note for candidates */}
         <div className="mb-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
           <p className="font-semibold">Task for candidates:</p>
-          <p>Implement the logic to filter safety measures based on risk factors and risk levels:</p>
+          <p>Tasks 3 and 4:</p>
           <ul className="list-disc list-inside pl-4">
-            <li>Add the fifth safety measure (Private Messaging Safeguards) to the data.ts file</li>
-            <li>Implement logic to filter measures based on the conditions</li>
-            <li>Consider risk factors from the Results page and risk levels from the Risk Assessment page</li>
-            <li>For the "Large service" condition, use the answer to question 3 (over 700k users)</li>
+            <li>Task 3: Add the fifth safety measure (Private Messaging Safeguards) to the data.ts file</li>
+            <li>Task 4: Implement logic to filter measures based on the conditions:</li>
+            <ul className="list-disc list-inside pl-4 ml-4">
+              <li>Consider risk factors from the Results page and risk levels from the Risk Assessment page</li>
+              <li>For the "Large service" condition, use the answer to question 3 (over 700k users)</li>
+              <li>Only show safety measures where the condition is met</li>
+            </ul>
           </ul>
         </div>
         

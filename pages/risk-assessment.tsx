@@ -86,7 +86,7 @@ export default function RiskAssessment() {
         {/* Note for candidates */}
         <div className="mb-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
           <p className="font-semibold">Task for candidates:</p>
-          <p>Add the fourth illegal harm:</p>
+          <p>Task 1: Add the fourth illegal harm:</p>
           <ul className="list-disc list-inside pl-4">
             <li>Add "Drugs and psychoactive substances" as a fourth illegal harm to assess</li>
             <li>Ensure the risk assessment interface allows users to assign risk levels to this new harm</li>

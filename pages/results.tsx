@@ -5,34 +5,74 @@ import Head from "next/head";
 
 export default function Results() {
   const router = useRouter();
-  const [riskList, setRiskList] = useState<string[]>(["terrorism", "hate", "harassment"]);
-  const [riskFactorList, setRiskFactorList] = useState<string[]>(["socialMedia", "gaming", "marketplace", "directMessaging", "commenting", "postingImages"]);
+  const [riskList, setRiskList] = useState<string[]>([]);
+  const [riskFactorList, setRiskFactorList] = useState<string[]>([]);
+  const [isLargeService, setIsLargeService] = useState<boolean>(false);
   
-  // This is a starter implementation that just shows all risk factors
-  // The candidate will need to implement the logic to filter based on questionnaire answers
-
   useEffect(() => {
     // Load saved answers from localStorage
     const savedAnswers = localStorage.getItem("questionnaireAnswers");
     if (savedAnswers) {
       try {
         const answers = JSON.parse(savedAnswers);
-        // Here the candidate would implement filtering logic based on answers
-        // Expected implementation:
-        // 1. For question 1 (service type), add the selected service type to riskFactorList
-        // 2. For question 2 (features), add each selected feature to riskFactorList
-        // 3. For question 3 (user count), if "700,000 or more" is selected, this indicates a "Large Service"
-        //    which should be considered when filtering safety measures later
-        // 4. For each risk factor, add its associated illegal harms from the riskFactors object to riskList
+        
+        // Initialize arrays to store identified risk factors and risks
+        const identifiedRiskFactors: string[] = [];
+        const identifiedRisks = new Set<string>();
+        
+        // Process Question 1 (service type)
+        if (answers.q1) {
+          answers.q1.forEach((serviceType: string) => {
+            identifiedRiskFactors.push(serviceType);
+            
+            // Add associated illegal harms to the risk list
+            if (riskFactors[serviceType]) {
+              riskFactors[serviceType].forEach(risk => identifiedRisks.add(risk));
+            }
+          });
+        }
+        
+        // Process Question 2 (features)
+        if (answers.q2) {
+          answers.q2.forEach((feature: string) => {
+            identifiedRiskFactors.push(feature);
+            
+            // Add associated illegal harms to the risk list
+            if (riskFactors[feature]) {
+              riskFactors[feature].forEach(risk => identifiedRisks.add(risk));
+            }
+          });
+        }
+        
+        // Process Question 3 (user count)
+        if (answers.q3) {
+          if (answers.q3.includes("largeService")) {
+            setIsLargeService(true);
+            
+            // Add "largeService" as a risk factor
+            identifiedRiskFactors.push("largeService");
+            if (riskFactors["largeService"]) {
+              riskFactors["largeService"].forEach(risk => identifiedRisks.add(risk));
+            }
+          }
+        }
+        
+        // Update state with identified risk factors and risks
+        setRiskFactorList(identifiedRiskFactors);
+        setRiskList(Array.from(identifiedRisks));
+        
       } catch (error) {
         console.error("Error parsing saved answers:", error);
       }
     }
-    
-    // Store the risks in localStorage for the next step
+  }, []);
+  
+  // Store the risks and risk factors in localStorage for the next step
+  useEffect(() => {
     localStorage.setItem("calculatedRisks", JSON.stringify(riskList));
     localStorage.setItem("riskFactors", JSON.stringify(riskFactorList));
-  }, [riskList, riskFactorList]);
+    localStorage.setItem("isLargeService", JSON.stringify(isLargeService));
+  }, [riskList, riskFactorList, isLargeService]);
 
   const handleContinue = () => {
     router.push("/risk-assessment");
@@ -90,13 +130,10 @@ export default function Results() {
         {/* Note for candidates */}
         <div className="mb-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
           <p className="font-semibold">Task for candidates:</p>
-          <p>Implement the logic to filter risk factors based on questionnaire answers:</p>
+          <p>Task 2: Update the filtering logic to support your changes:</p>
           <ul className="list-disc list-inside pl-4">
-            <li>Update the useEffect to process answers from localStorage</li>
-            <li>Add support for the risk factors related to question 3</li>
-            <li>Add support the fourth illegal harm 'Drugs and psychoactive substances'</li>
-            <li>Filter risk factors based on the selected options from questions 1, 2, and 3</li>
-            
+            <li>Ensure the filtering logic handles the fourth illegal harm 'Drugs and psychoactive substances' that you added in Task 1</li>
+            <li>Make sure the new illegal harm appears under its linked risk factors on this page</li>
           </ul>
         </div>
         

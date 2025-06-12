@@ -72,11 +72,7 @@ export default function Questionnaire() {
         {/* Note for candidates */}
         <div className="mb-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
           <p className="font-semibold">Task for candidates:</p>
-          <p>Add the third question about monthly active UK users:</p>
-          <ul className="list-disc list-inside pl-4">
-            <li>Question text: "How many monthly active UK users does your service have?"</li>
-            <li>Options: "Less than 700,000" and "700,000 or more i.e. Large service"</li>
-          </ul>
+          <p>In Task 1, you'll need to add a fourth illegal harm "Drugs and psychoactive substances" and link it to the appropriate risk factors.</p>
         </div>
         
         <button

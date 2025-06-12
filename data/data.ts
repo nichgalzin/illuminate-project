@@ -51,8 +51,16 @@ export const questionnaireData = {
         { value: "postingImages", label: "Posting or sending images or videos" }
       ],
       type: "checkbox"
+    },
+    {
+      id: "q3",
+      text: "How many monthly active UK users does your service have?",
+      options: [
+        { value: "smallService", label: "Less than 700,000" },
+        { value: "largeService", label: "700,000 or more i.e. Large service" }
+      ],
+      type: "radio"
     }
-    // Question 3 needs to be added by the candidate
   ]
 };
 
@@ -68,12 +76,12 @@ export const illegalHarms: IllegalHarm[] = [
 // are relevant for each risk factor identified from the questionnaire answers
 export const riskFactors: Record<string, string[]> = {
   socialMedia: ["terrorism", "hate", "harassment"],
-  gaming: ["terrorism", "hate", "harassment"],
+  gaming: ["terrorism", "harassment"],
   marketplace: ["terrorism"],
-  directMessaging: ["terrorism", "hate", "harassment"],
-  commenting: ["terrorism", "hate", "harassment"],
-  postingImages: ["terrorism", "hate", "harassment"]
-  // Risk factors for question 3 need to be added by the candidate
+  directMessaging: ["hate", "harassment"],
+  commenting: ["hate", "harassment"],
+  postingImages: ["terrorism", "hate"],
+  largeService: ["terrorism", "hate", "harassment"]
 };
 
 export const riskFactorDescriptions: RiskFactorInfo[] = [
@@ -87,7 +95,7 @@ export const riskFactorDescriptions: RiskFactorInfo[] = [
     id: "gaming",
     name: "Gaming services",
     description: "If your service is a gaming service, you should consider how it may bring potential perpetrators in contact with other users and may create a space where potentially illegal behaviour is normalised. Gaming services can allow hateful content to spread and become sites of 'normalised harassment', where name-calling or insults are part of user interactions. Gaming services can also be created and modified by terrorist organisations as recruitment tools.",
-    relatedHarms: ["terrorism", "hate", "harassment"]
+    relatedHarms: ["terrorism", "harassment"]
   },
   {
     id: "marketplace",
@@ -99,19 +107,25 @@ export const riskFactorDescriptions: RiskFactorInfo[] = [
     id: "directMessaging",
     name: "Direct messaging",
     description: "There is a strong link between direct messaging and various offences due to the closed nature of these messages. While direct messaging can enable users to protect their privacy, direct messaging can be used to facilitate offences or share illegal content in a way that is not immediately visible to the public.",
-    relatedHarms: ["terrorism", "hate", "harassment"]
+    relatedHarms: ["hate", "harassment"]
   },
   {
     id: "commenting",
     name: "Commenting on content",
     description: "Commenting on content can enable potential perpetrators to target users who share content and to amplify or signpost to existing illegal content. For example, potential perpetrators may share comments containing hateful content on a user's post, sometimes with a coordinated group of users, as a means of targeting the user who posted the content.",
-    relatedHarms: ["terrorism", "hate", "harassment"]
+    relatedHarms: ["hate", "harassment"]
   },
   {
     id: "postingImages",
     name: "Posting images or videos",
     description: "Posting images or videos can allow potential perpetrators to share illegal content with many users in open channels of communication. Posting images is a key functionality in the commission of image-based offences, for example, users may be able to post 'memes' that include terrorist or hateful content.",
-    relatedHarms: ["terrorism", "hate", "harassment"]
+    relatedHarms: ["terrorism", "hate"]
+  },
+  {
+    id: "largeService",
+    name: "Large service",
+    description: "Services with 700,000 or more monthly active UK users are considered large services. Large services may have greater resources to implement safety measures but also have a greater potential impact if illegal content is shared on their platform.",
+    relatedHarms: ["terrorism", "hate", "harassment"] 
   }
 ];
 
