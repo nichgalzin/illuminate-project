@@ -75,13 +75,13 @@ export const illegalHarms: IllegalHarm[] = [
 // When implementing filtering logic, use this to determine which illegal harms
 // are relevant for each risk factor identified from the questionnaire answers
 export const riskFactors: Record<string, string[]> = {
-  socialMedia: ['terrorism', 'hate', 'harassment'],
+  socialMedia: ['terrorism', 'hate', 'harassment', 'drugs'],
   gaming: ['terrorism', 'harassment'],
-  marketplace: ['terrorism'],
+  marketplace: ['terrorism', 'drugs'],
   directMessaging: ['hate', 'harassment'],
   commenting: ['hate', 'harassment'],
-  postingImages: ['terrorism', 'hate'],
-  largeService: ['terrorism', 'hate', 'harassment'],
+  postingImages: ['terrorism', 'hate', 'drugs'],
+  largeService: ['terrorism', 'hate', 'harassment', 'drugs'],
 };
 
 export const riskFactorDescriptions: RiskFactorInfo[] = [
@@ -90,7 +90,7 @@ export const riskFactorDescriptions: RiskFactorInfo[] = [
     name: 'Social media services',
     description:
       'Research shows that social media services can increase the risk of all kinds of illegal harm. This may be due to more research on social media services, or greater probability of risk due to the wide range of functionalities and features on many social media services.',
-    relatedHarms: ['terrorism', 'hate', 'harassment'],
+    relatedHarms: ['terrorism', 'hate', 'harassment', 'drugs'],
   },
   {
     id: 'gaming',
@@ -104,7 +104,7 @@ export const riskFactorDescriptions: RiskFactorInfo[] = [
     name: 'Marketplace or listing services',
     description:
       'If your service is a marketplace or listings service, you should consider how your service may be used by potential perpetrators to sell or buy illegal goods or services. They are often used in purchase scams in fraud offences and can also be used to raise funds that are used for potentially illegal purposes such as terrorist activities. The ability to make online payments on online marketplaces or listing services can increase the risk of harm.',
-    relatedHarms: ['terrorism'],
+    relatedHarms: ['terrorism', 'drugs'],
   },
   {
     id: 'directMessaging',
@@ -125,14 +125,14 @@ export const riskFactorDescriptions: RiskFactorInfo[] = [
     name: 'Posting images or videos',
     description:
       "Posting images or videos can allow potential perpetrators to share illegal content with many users in open channels of communication. Posting images is a key functionality in the commission of image-based offences, for example, users may be able to post 'memes' that include terrorist or hateful content.",
-    relatedHarms: ['terrorism', 'hate'],
+    relatedHarms: ['terrorism', 'hate', 'drugs'],
   },
   {
     id: 'largeService',
     name: 'Large service',
     description:
       'Services with 700,000 or more monthly active UK users are considered large services. Large services may have greater resources to implement safety measures but also have a greater potential impact if illegal content is shared on their platform.',
-    relatedHarms: ['terrorism', 'hate', 'harassment'],
+    relatedHarms: ['terrorism', 'hate', 'harassment', 'drugs'],
   },
 ];
 
@@ -161,5 +161,10 @@ export const safetyMeasures: SafetyMeasure[] = [
     condition: 'High risk of Drugs and psychoactive substances',
     description: 'Limit the ability to post or share images/videos in high-risk contexts or implement pre-screening.',
   },
-  // The fifth measure needs to be added by the candidate
+  {
+    ref: 'M5',
+    name: 'Private Messaging Safeguards',
+    condition: 'High risk of Harassment, stalking threats and abuse',
+    description: 'Introduce keywords detection and friction (e.g., message prompts) in direct messages to reduce abuse',
+  },
 ];
