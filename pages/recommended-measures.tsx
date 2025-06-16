@@ -1,32 +1,20 @@
 import { useState, useEffect, useCallback } from 'react';
-import { safetyMeasures, SafetyMeasure } from '../data/data';
+import { safetyMeasures, type SafetyMeasure, RiskLevels, QuestionnaireAnswers } from '../data/data';
 import { useRouter } from 'next/router';
+import { getFromLocalStorage } from '../utils/getFromLocalStorage';
 import Head from 'next/head';
 
 export default function RecommendedMeasures() {
   const router = useRouter();
-  // Initially show all measures without any filtering logic
   const [measures, setMeasures] = useState<SafetyMeasure[]>(safetyMeasures);
 
-  // This is a starter implementation that just shows all measures
-  // The candidate will need to implement the logic to filter based on risk factors and risk levels
-
-  // Expected implementation:
-  // 1. Load risk levels from localStorage (saved in the risk-assessment page)
-  // 2. Load risk factors and answers from localStorage
-  // 3. For each safety measure, check if its condition is met:
-  //    - For "2 illegal harms assigned 'High' risk", count how many illegal harms have High risk level
-  //    - For "High risk of [specific harm]", check if that specific harm has High risk level
-  //    - For "Large service AND [condition]", check if question 3 answer is "700,000 or more" AND the other condition is met
   const filterMeasures = useCallback(() => {
-    const savedRiskLevels = localStorage.getItem('riskLevels');
-    const savedAnswers = localStorage.getItem('questionnaireAnswers');
-
-    if (!savedRiskLevels || !savedAnswers) {
+    const risks = getFromLocalStorage<RiskLevels>('riskLevels');
+    const answers = getFromLocalStorage<QuestionnaireAnswers>('questionnaireAnswers');
+    if (!risks || !answers) {
       return;
     }
-    const risks = JSON.parse(savedRiskLevels);
-    const answers = JSON.parse(savedAnswers);
+
     const isLargeService = answers.q3 === 'largeService';
     const highRiskCount = Object.values(risks).filter((level) => level === 'High').length;
 
