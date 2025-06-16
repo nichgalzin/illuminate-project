@@ -32,6 +32,17 @@ export interface SafetyMeasure {
   };
 }
 
+export interface RiskLevels {
+  [harmId: string]: 'High' | 'Medium' | 'Low';
+}
+
+export interface QuestionnaireAnswers {
+  q1?: string[];
+  q2?: string[];
+  q3?: 'smallService' | 'largeService';
+  [key: string]: any;
+}
+
 // Note for candidates: When a user selects "700,000 or more" for question 3,
 // this means the service should be considered a "Large Service" for the purpose
 // of safety measure conditions (e.g., "Large service AND High risk of Hate")
