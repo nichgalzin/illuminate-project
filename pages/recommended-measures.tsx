@@ -7,38 +7,54 @@ import Head from 'next/head';
 export default function RecommendedMeasures() {
   const router = useRouter();
   const [measures, setMeasures] = useState<SafetyMeasure[]>(safetyMeasures);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const filterMeasures = useCallback(() => {
-    const risks = getFromLocalStorage<RiskLevels>('riskLevels');
-    const answers = getFromLocalStorage<QuestionnaireAnswers>('questionnaireAnswers');
-    if (!risks || !answers) {
-      return;
-    }
+    setIsLoading(true);
+    setError(null);
+    try {
+      const riskLevels = getFromLocalStorage<RiskLevels>('riskLevels');
+      const answers = getFromLocalStorage<QuestionnaireAnswers>('questionnaireAnswers');
 
-    const isLargeService = answers.q3 === 'largeService';
-    const highRiskCount = Object.values(risks).filter((level) => level === 'High').length;
-
-    const filteredMeasures = safetyMeasures.filter((measure) => {
-      switch (measure.conditionType) {
-        case 'highRiskCount':
-          return highRiskCount >= (measure.conditionData.minCount || 0);
-
-        case 'specificHarmHighRisk':
-          return measure.conditionData.harmId && risks[measure.conditionData.harmId] === 'High';
-
-        case 'largeServiceAndHighRisk':
-          return isLargeService && measure.conditionData.harmId && risks[measure.conditionData.harmId] === 'High';
-
-        default:
-          return false;
+      if (!riskLevels || !answers) {
+        setError('Required data is missing. Please complete the risk assessment first.');
+        setMeasures([]);
+        return;
       }
-    });
-    setMeasures(filteredMeasures);
+
+      const isLargeService = answers.q3 === 'largeService';
+      const highRiskCount = Object.values(riskLevels).filter((level) => level === 'High').length;
+
+      const filteredMeasures = safetyMeasures.filter((measure) => {
+        switch (measure.conditionType) {
+          case 'highRiskCount':
+            return highRiskCount >= (measure.conditionData.minCount || 0);
+
+          case 'specificHarmHighRisk':
+            return measure.conditionData.harmId && riskLevels[measure.conditionData.harmId] === 'High';
+
+          case 'largeServiceAndHighRisk':
+            return (
+              isLargeService && measure.conditionData.harmId && riskLevels[measure.conditionData.harmId] === 'High'
+            );
+
+          default:
+            return false;
+        }
+      });
+      setMeasures(filteredMeasures);
+    } catch (error) {
+      setError('An error occurred while processing your risk assessment data.');
+      setMeasures([]);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
   useEffect(() => {
     filterMeasures();
-  }, []);
+  }, [filterMeasures]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -52,22 +68,42 @@ export default function RecommendedMeasures() {
           Based on your risk assessment, we recommend implementing the following safety measures:
         </p>
 
-        <div className="space-y-4 mb-8">
-          {measures.map((measure, idx) => (
-            <div key={idx} className="bg-white rounded-lg shadow p-6">
-              <div className="flex justify-between items-start">
-                <h3 className="text-lg font-semibold">{measure.name}</h3>
-                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">{measure.reference}</span>
-              </div>
-              <p className="text-sm text-gray-500 mt-1">Condition: {measure.condition}</p>
-              <p className="mt-3">{measure.description}</p>
-            </div>
-          ))}
+        {isLoading && (
+          <div className="text-center py-8">
+            <p>Loading recommendations...</p>
+          </div>
+        )}
 
-          {measures.length === 0 && (
-            <p className="text-center py-8 text-gray-500">No measures recommended based on your risk profile.</p>
-          )}
-        </div>
+        {error && (
+          <div className="p-4 bg-red-50 border border-red-200 rounded-lg mb-6">
+            <p className="text-red-700">{error}</p>
+            <button
+              onClick={() => router.push('/')}
+              className="mt-2 px-4 py-1 bg-red-100 text-red-800 rounded hover:bg-red-200 transition-colors"
+            >
+              Please Start Again
+            </button>
+          </div>
+        )}
+
+        {!isLoading && !error && (
+          <div className="space-y-4 mb-8">
+            {measures.map((measure, idx) => (
+              <div key={idx} className="bg-white rounded-lg shadow p-6">
+                <div className="flex justify-between items-start">
+                  <h3 className="text-lg font-semibold">{measure.name}</h3>
+                  <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">{measure.reference}</span>
+                </div>
+                <p className="text-sm text-gray-500 mt-1">Condition: {measure.condition}</p>
+                <p className="mt-3">{measure.description}</p>
+              </div>
+            ))}
+
+            {measures.length === 0 && (
+              <p className="text-center py-8 text-gray-500">No measures recommended based on your risk profile.</p>
+            )}
+          </div>
+        )}
 
         {/* Note for candidates */}
         <div className="mb-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
