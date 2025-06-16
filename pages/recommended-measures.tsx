@@ -23,6 +23,7 @@ export default function RecommendedMeasures() {
       const answers = getFromLocalStorage<QuestionnaireAnswers>(
         "questionnaireAnswers",
       );
+      const isLargeService = getFromLocalStorage<boolean>("isLargeService");
 
       if (!riskLevels || !answers) {
         setError(
@@ -32,7 +33,6 @@ export default function RecommendedMeasures() {
         return;
       }
 
-      const isLargeService = answers.q3 && answers.q3[0] === "largeService";
       const highRiskCount = Object.values(riskLevels).filter(
         (level) => level === "High",
       ).length;
