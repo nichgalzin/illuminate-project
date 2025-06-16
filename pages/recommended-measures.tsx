@@ -32,7 +32,7 @@ export default function RecommendedMeasures() {
         return;
       }
 
-      const isLargeService = answers.q3 === "largeService";
+      const isLargeService = answers.q3 && answers.q3[0] === "largeService";
       const highRiskCount = Object.values(riskLevels).filter(
         (level) => level === "High",
       ).length;
