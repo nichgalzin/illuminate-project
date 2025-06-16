@@ -25,6 +25,11 @@ export interface SafetyMeasure {
   name: string;
   condition: string;
   description: string;
+  conditionType: 'highRiskCount' | 'specificHarmHighRisk' | 'largeServiceAndHighRisk';
+  conditionData: {
+    minCount?: number;
+    harmId?: string;
+  };
 }
 
 // Note for candidates: When a user selects "700,000 or more" for question 3,
@@ -142,29 +147,49 @@ export const safetyMeasures: SafetyMeasure[] = [
     name: 'Enhanced Content Moderation',
     condition: "2 illegal harms assigned 'High' risk",
     description: 'Implement real-time automated content moderation and expand human review coverage.',
+    conditionType: 'highRiskCount',
+    conditionData: {
+      minCount: 2,
+    },
   },
   {
     reference: 'M2',
     name: 'Terrorism Response Protocol',
     condition: 'High risk of Terrorism',
     description: 'Establish a rapid escalation and takedown process for terrorist content, including staff training.',
+    conditionType: 'specificHarmHighRisk',
+    conditionData: {
+      harmId: 'terrorism',
+    },
   },
   {
     reference: 'M3',
     name: 'Community Reporting Boost',
     condition: 'Large service AND High risk of Hate',
     description: 'Increase visibility and ease of user reporting tools, with prioritisation for hate-related content.',
+    conditionType: 'largeServiceAndHighRisk',
+    conditionData: {
+      harmId: 'hate',
+    },
   },
   {
     reference: 'M4',
     name: 'Restricted Media Sharing',
     condition: 'High risk of Drugs and psychoactive substances',
     description: 'Limit the ability to post or share images/videos in high-risk contexts or implement pre-screening.',
+    conditionType: 'highRiskCount',
+    conditionData: {
+      minCount: 2,
+    },
   },
   {
     reference: 'M5',
     name: 'Private Messaging Safeguards',
     condition: 'High risk of Harassment, stalking threats and abuse',
     description: 'Introduce keywords detection and friction (e.g., message prompts) in direct messages to reduce abuse',
+    conditionType: 'specificHarmHighRisk',
+    conditionData: {
+      harmId: 'harassment',
+    },
   },
 ];
