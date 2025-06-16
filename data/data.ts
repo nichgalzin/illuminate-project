@@ -188,9 +188,9 @@ export const safetyMeasures: SafetyMeasure[] = [
     name: 'Restricted Media Sharing',
     condition: 'High risk of Drugs and psychoactive substances',
     description: 'Limit the ability to post or share images/videos in high-risk contexts or implement pre-screening.',
-    conditionType: 'highRiskCount',
+    conditionType: 'specificHarmHighRisk',
     conditionData: {
-      minCount: 2,
+      harmId: 'drugs',
     },
   },
   {
