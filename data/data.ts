@@ -162,7 +162,7 @@ export const safetyMeasures: SafetyMeasure[] = [
     description: 'Limit the ability to post or share images/videos in high-risk contexts or implement pre-screening.',
   },
   {
-    ref: 'M5',
+    reference: 'M5',
     name: 'Private Messaging Safeguards',
     condition: 'High risk of Harassment, stalking threats and abuse',
     description: 'Introduce keywords detection and friction (e.g., message prompts) in direct messages to reduce abuse',
